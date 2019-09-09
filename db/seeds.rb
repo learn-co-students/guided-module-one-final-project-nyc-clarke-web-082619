@@ -1,12 +1,34 @@
 #create test samples
 require "pry"
 
-p1 = Player.new("Tony")
-p2 = Player.new("Sebastian")
-p3 = Player.new("Yoan")
-binding.pry
+p1 = Player.create(name: "Tony")
+p2 = Player.create(name: "Sebastian")
+p3 = Player.create(name: "Yoan")
+p4 = Player.create(name: "Tom")
+p5 = Player.create(name: "Erin")
 
-b1 = Board.new
+b1 = Board.create(puzzle: " _96_571___4_82_9___3____5____95__4___1_____9___8__26____4____2___3_79_5___126_98_", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+binding.pry
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #puzzles
