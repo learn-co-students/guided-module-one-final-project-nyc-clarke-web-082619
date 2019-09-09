@@ -20,7 +20,7 @@ puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Let's Play..."
 
 # def "check solution" method
 #    - compares input against solution
-#    - if valid : display updated board
+#    - if valid : clear terminal and display updated board
 #    - if invalid: puts "sorry! try again!"
 # end
 
