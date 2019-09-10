@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190909193311) do
+ActiveRecord::Schema.define(version: 20190910202053) do
 
   create_table "boards", force: :cascade do |t|
     t.string "solution"
@@ -18,9 +18,11 @@ ActiveRecord::Schema.define(version: 20190909193311) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.time  "start_time"
-    t.time  "end_time"
-    t.float "total_time"
+    t.time    "start_time"
+    t.time    "end_time"
+    t.float   "total_time"
+    t.integer "board_id"
+    t.integer "player_id"
   end
 
   create_table "players", force: :cascade do |t|
