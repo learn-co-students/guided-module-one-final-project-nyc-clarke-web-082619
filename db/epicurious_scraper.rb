@@ -40,14 +40,17 @@ while page_counter_2 < 5 do
     recipe_url = 'https://www.epicurious.com' + recipe_url_array[page_counter_2]
     recipe_page = Nokogiri::HTML.parse(open(recipe_url))
 
+
+    # Grab name of this recipe and save it to new Recipe instance
     name_of_recipe = recipe_page.css('h1').text
     name_of_recipe.chomp!
-
     new_recipe = Recipe.new(name: name_of_recipe)
-    binding.pry
-    # recipe_page.css('h4').collect do |recipe_title_object|
-    #     recipe_title_object.css('a').attribute('href').value if recipe_title_object.css('a').attribute('href') 
 
+    ingredients_text = recipe_page.css('.ingredients').collect do |recipe_ingredients_list|
+        recipe_ingredients_list.css('ul').text
+    end
+
+    binding.pry
     # end
     # recipe_url_array.concat(title_array)
     # recipe_url_array.delete("")
