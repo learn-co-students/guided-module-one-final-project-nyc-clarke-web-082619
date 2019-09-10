@@ -38,7 +38,21 @@ puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Let's Play..."
 # puts "Enter value: "
 ## user_input << value
 
-game = Game.create(player: user, board: board)
+game = Game.create(player: name, board: b1)
+
+
+ def get_input
+    user_input = []
+    puts "Please enter a number (1-9) for the block:"
+    user_input << gets.chomp
+    puts "Please enter a number (1-9) for the position:"
+    user_input << gets.chomp
+    puts "Please enter a number (1-9) for the value you would like to enter:"
+    user_input << gets.chomp
+    user_input
+ end
+
+user_input = get_input
 
 def input_valid?(user_input)
     valid = true
@@ -71,7 +85,7 @@ def check_against_solution(solution_string, index, value)
      end
 end
 
-def vaid_move?(user_input)
+def valid_move?(user_input)
     user_index = input_to_index(user_input)
     input_valid?(user_input) && position_available?(game.board.puzzle, user_index) && check_against_solution(game.board.solution, user_index, user_input[2])
 end
@@ -85,30 +99,19 @@ end
 
 #congrats!!
 def move(board, user_input) #update string with number @ position; push into string
-    self.board.puzzle[input_to_index] = user_input[2]
-    return self.board.puzzle
+    board.puzzle[input_to_index] = user_input[2]
+    return board.puzzle
  end
- def updated_display_board #clear terminal and display updated board
+ def updated_display_board(board) #clear terminal and display updated board  << pass in a board
     system('cls') #code to clear terminal?
-    display_board
+    board.display_board
  end
- user_input = get_input
- def get_input
-    user_input = []
-    puts "Please enter a number (1-9) for the block:"
-    user_input << gets.chomp
-    puts "Please enter a number (1-9) for the position:"
-    user_input << gets.chomp
-    puts "Please enter a number (1-9) for the value you would like to enter:"
-    user_input << gets.chomp
-    user_input
- end
+ 
  def turn(board)
     user_input = get_input
-    index = input_to_index(user_input)
-    if valid_move?(board, index) #verify arguments with Tom
-        move() #arguments
-        updated_display_board
+    if valid_move?(user_input) #verify arguments with Tom
+        move(game.board, user_input) #arguments  <<specify board, and user_input[2]
+        updated_display_board(board)
     else
         turn
     end
@@ -130,3 +133,4 @@ def move(board, user_input) #update string with number @ position; push into str
     time = total_time(start_time, end_time)
     puts "You completed this puzzle in #{time}!"
  end
+ 

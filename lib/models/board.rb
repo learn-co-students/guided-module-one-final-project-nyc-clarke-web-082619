@@ -20,17 +20,6 @@ class Board < ActiveRecord::Base
         puts "========================================"
     end
 
-    # @@all = []
-
-    # def initialize(puzzle, solution) #add difficulty
-    #     @puzzle = puzzle
-    #     @solution = solution
-    #     @@all << self
-    # end
-
-    # def self.all
-    #     @@all
-    # end
     
 
 end
