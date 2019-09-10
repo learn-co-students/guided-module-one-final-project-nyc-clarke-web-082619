@@ -1,6 +1,6 @@
 class Game < ActiveRecord::Base
-    has_many :players
-    has_many :boards, through: :players
+    belongs_to :player
+    belongs_to :board
 
 
 
