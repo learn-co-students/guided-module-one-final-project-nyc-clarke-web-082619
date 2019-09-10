@@ -9,9 +9,9 @@ class CommandLineInterface
                 # ask user for ingredients separated by commas
                 user_input   = ask_for_required_ingredients
                 # find recipes that match
-                recipe_names = prioritized_recipe_search(user_input)
+                recipe_instances = prioritized_recipe_search(user_input)
                 # users pick from those recipes, then show detail
-                choose_recipes(recipe_names)
+                choose_recipes(recipe_instances)
                 UI.keypress("Press Enter to go back")
                 main_menu
             end

@@ -16,6 +16,16 @@ class Recipe < ActiveRecord::Base
 
     def self.prioritize_recipes_from_ingredient_array(ingredient_array)
         recipe_array_with_duplicates = ingredient_array.map{|ingredient| ingredient.recipes}.flatten
+        recipe_hash_with_count = Hash.new(0)
+        recipe_array_with_duplicates.each do |recipe|
+            recipe_hash_with_count[recipe] += 1
+        end
+        # recipe_hash_with_count.each do |k, v|
+        #     puts "#{k.name} appears #{v} times"
+        # end
+        sorted_recipes_by_count = recipe_hash_with_count.sort_by{|recipe, count| count}
+        sorted_recipes_by_count.reverse!.flatten!
+        sorted_recipes_by_count = sorted_recipes_by_count.select{|element| element.class == Recipe}
     end
 
     def self.inclusive_recipes_from_ingredient_array(ingredient_array)
