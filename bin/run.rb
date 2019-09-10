@@ -20,8 +20,6 @@ cli.main_menu
 # choices = cli.inclusive_recipe_search(user_input)
 
 
-chosen_recipe = prompt.select("Select a recipe:", choices)
-cli.display_recipe_details(chosen_recipe)
 
 
 # binding.pry

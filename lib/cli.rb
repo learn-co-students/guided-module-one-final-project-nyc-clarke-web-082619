@@ -15,7 +15,9 @@ class CommandLineInterface
                 UI.keypress("Press Enter to go back")
                 main_menu
             end
-            menu.choice 'Exit'
+            menu.choice 'Exit', -> do
+                puts " \nGoodbye!"
+            end
           end
     end
 
