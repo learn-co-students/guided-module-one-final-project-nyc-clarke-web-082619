@@ -19,10 +19,10 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "pickup_lines", force: :cascade do |t|
-    t.string  "location"
     t.string  "content"
     t.integer "provider_id"
     t.integer "user_id"
+    t.integer "location_id"
   end
 
   create_table "providers", force: :cascade do |t|
