@@ -15,7 +15,7 @@ class Recipe < ActiveRecord::Base
 
 
     def self.prioritize_recipes_from_ingredient_array(ingredient_array)
-        recipe_array_with_duplicates = inclusive_recipes_from_ingredient_array(ingredient_array)
+        recipe_array_with_duplicates = ingredient_array.map{|ingredient| ingredient.recipes}.flatten
     end
 
     def self.inclusive_recipes_from_ingredient_array(ingredient_array)
