@@ -7,22 +7,22 @@ system 'clear'
 old_logger = ActiveRecord::Base.logger
 ActiveRecord::Base.logger = nil
 
-prompt = TTY::Prompt.new
+cli = CommandLineInterface.new
+
+cli.greet
+cli.main_menu
 
 
-new_cli = CommandLineInterface.new
-new_cli.greet
-# user_input = new_cli.gets_user_input
+# user_input = prompt.ask('Which ingredients do you NEED to use? (comma sep list)') do |q|
+#     q.convert -> (input) { input.split(/,\s*/) }
+# end 
+# user_input = cli.ask_for_required_ingredients
+# choices = cli.inclusive_recipe_search(user_input)
 
 
-user_input = prompt.ask('Which ingredients do you NEED to use? (comma sep list)') do |q|
-    q.convert -> (input) { input.split(/,\s*/) }
-end 
+chosen_recipe = prompt.select("Select a recipe:", choices)
+cli.display_recipe_details(chosen_recipe)
 
-user_input = user_input.map{|item| item.capitalize}
-foods = Ingredient.find_foods(user_input)
 
-Recipe.print_list_from_ingredient_array(foods)
-
-binding.pry
+# binding.pry
 

@@ -6,14 +6,14 @@ class Ingredient < ActiveRecord::Base
         recipes.map{|rec| rec.name}
     end
 
-    def self.find_food(food)
-        self.all.find_by(name: food)
+    def self.find_single_ingredient_by_name(ingredient_name)
+        self.all.find_by(name: ingredient_name)
     end
 
-    def self.find_foods(food_array)
+    def self.find_ingredients_by_name(ingredient_name_array)
         new_array = []
-        food_array.each do |food_name|
-            new_array << self.find_food(food_name)
+        ingredient_name_array.each do |ingredient_name|
+            new_array << self.find_single_ingredient_by_name(ingredient_name)
         end
         new_array
     end
