@@ -1,6 +1,6 @@
 class Board < ActiveRecord::Base
-    belongs_to :game
-    belongs_to :player
+    has_many :games
+    has_many :players, through: :games 
 
 
     def display_board
