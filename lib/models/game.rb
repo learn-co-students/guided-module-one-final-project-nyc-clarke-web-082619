@@ -4,13 +4,13 @@ class Game < ActiveRecord::Base
 
 
 
-    def check_user_input(input)
-        if !(input >= 1 && <= 9)
-            puts "Invalid entry, try again"
-        else
-            #run
-        end
-    end
+    # def check_user_input(input)
+    #     if !(input >= 1 && <= 9)
+    #         puts "Invalid entry, try again"
+    #     else
+    #         #run
+    #     end
+    # end
 
     # add method for player to submit board, which will check solutions, and set end_time, and calculate total_time
 
