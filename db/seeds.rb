@@ -25,42 +25,52 @@ $kavaleigh = Provider.create(name: 'Kavaleigh', employed: true)
 $deannalynn = Provider.create(name: 'DeAnnalynn', employed: true)
 
 #USERS
-$whiteclawjack = User.create(name: 'Jack', phone_number: '323-432-7612')
-$andrew = User.create(name: 'Andrew', phone_number: '323-432-7613')
-$xxreddarknessxx = User.create(name: 'Tony', phone_number: '323-432-7614')
-$kayla = User.create(name: 'Kayla', phone_number: '323-432-7615')
-$megan = User.create(name: 'Megan', phone_number: '323-432-7616')
-$erin = User.create(name: 'Erin', phone_number: '323-432-7617')
+$whiteclawjack = User.create(name: 'Jack', phone_number: '323-432-7612', active_user: true)
+$andrew = User.create(name: 'Andrew', phone_number: '323-432-7613', active_user: true)
+$xxreddarknessxx = User.create(name: 'Tony', phone_number: '323-432-7614', active_user: true)
+$kayla = User.create(name: 'Kayla', phone_number: '323-432-7615', active_user: true)
+$megan = User.create(name: 'Megan', phone_number: '323-432-7616', active_user: true)
+$erin = User.create(name: 'Erin', phone_number: '323-432-7617', active_user: true)
 
 #PICKUP-LINES
+
 $harry_potter.each do |line|
- new_line = PickupLine.create({content: line, location: hogwarts})
+  PickupLine.create({content: line, location: $hogwarts})
 end
+
 $star_wars.each do |line|
- new_line = PickupLine.create({content: line, location: mos_eisley_cantina})
+  PickupLine.create({content: line, location: $mos_eisley_cantina})
 end
+
 $gyms.each do |line|
- new_line = PickupLine.create({content: line, location: gym})
+  PickupLine.create({content: line, location: $gym})
 end 
-$coffee_shop.each do |line|
- new_line = PickupLine.create({content: line, location: coffee_shop})
+
+$coffee_shops.each do |line|
+  PickupLine.create({content: line, location: $coffee_shop})
 end
-$dog_park.each do |line|
- new_line = PickupLine.create({content: line, location: dog_park})
+
+$dog_parks.each do |line|
+  PickupLine.create({content: line, location: $dog_park})
 end
-$beach_pool.each do |line|
- new_line = PickupLine.create({content: line, location: beach_pool})
+
+$beaches_pools.each do |line|
+  PickupLine.create({content: line, location: $beach_pool})
 end
+
 $computers.each do |line|
- new_line = PickupLine.create({content: line, location: programming_meetup})
+  PickupLine.create({content: line, location: $programming_meetup})
 end 
+
 $political_events.each do |line|
- new_line = PickupLine.create({content: line, location: dem_national_convention})
+  PickupLine.create({content: line, location: $dem_national_convention})
 end
+
 $bars.each do |line|
- new_line = PickupLine.create({content: line, location: bar})
+  PickupLine.create({content: line, location: $bar})
 end
+
 $is_your_daddy.each do |line|
- new_line = PickupLine.create({content: line, location: other_location})
+  PickupLine.create({content: line, location: $other_location})
 end
 

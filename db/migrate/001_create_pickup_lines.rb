@@ -3,7 +3,7 @@ class CreatePickupLines < ActiveRecord::Migration[5.0]
     create_table :pickup_lines do |t|
       t.string :content  
       t.integer :provider_id
-      t.integer :user_id #keep track of lines that worked?
+      t.integer :user_id 
       t.integer :location_id
     end
   end

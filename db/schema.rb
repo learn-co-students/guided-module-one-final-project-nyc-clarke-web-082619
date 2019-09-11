@@ -33,12 +33,10 @@ ActiveRecord::Schema.define(version: 4) do
   create_table "users", force: :cascade do |t|
     t.string  "name"
     t.string  "phone_number"
-    t.string  "account_type"
     t.boolean "active_user"
     t.integer "provider_id"
     t.integer "location_id"
     t.string  "accepted_lines"
-    t.string  "rejected_lines"
   end
 
 end

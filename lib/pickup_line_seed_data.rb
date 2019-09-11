@@ -208,7 +208,7 @@ $gyms = [
 "You don't need to waste your time on that treadmill, you've been running through my mind all day.",
 "Your dad must be a baker, you've got hot buns."]
 
-$coffee_shop = [
+$coffee_shops = [
 "That's a nice mug you got on ya.",
 "Affogato where I am when I'm with you.",
 "Are you from Starbucks? Because I like you a latte.",
@@ -261,7 +261,7 @@ $coffee_shop = [
 "You've turned me down before but I'm asking for an extra shot.",
 "You’re like this year’s Darjeeling. Had me at first flush."]
 
-$dog_park = [
+$dog_parks = [
 "A day with you is like an eternity of behind the ear scratches.",
 "Are you tired? Because you've been running through my mind all day with a frisbee in your mouth.",
 "Can I get you a tennis ball?",
@@ -339,7 +339,7 @@ $dog_park = [
 "You should come home with me, because I’ll make you dino sore.",
 "You’re the triceratops!"]
 
-$beach_pool = [
+$beaches_pools = [
 "All those curves, and me with no brakes.",
 "Are you a low interval sprint set? Beause you're making my face all red.",
 "Are you the deep end? Because I’m ready to dive right in.",
