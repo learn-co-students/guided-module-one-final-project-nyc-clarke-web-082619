@@ -1,7 +1,9 @@
 require_relative '../config/environment'
 require 'pry'
+ActiveRecord::Base.logger = nil
 
-puts "Welcome To Sudoku!!!"
+
+puts "Welcome To 💩   doku!!!"
 
 puts "Let's get to know each other better - Please enter your name: "
 
@@ -9,19 +11,10 @@ name = gets.chomp
 puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Let's Play..."
 
 user = Player.create(name: name)
-b1 = Board.create(puzzle: " _96_571___4_82_9___3____5____95__4___1_____9___8__26____4____2___3_79_5___126_98_", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+
+b1 = Board.create(puzzle: " 💩96💩571💩💩💩4💩82💩9💩💩💩3💩💩💩💩5💩💩💩💩95💩💩4💩💩💩1💩💩💩💩💩9💩💩💩8💩💩26💩💩💩💩4💩💩💩💩2💩💩💩3💩79💩5💩💩💩126💩98💩", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+#b1 = Board.create(puzzle: " 29635714814582693783714952663958147251276439847839261596481572328347965175126398_", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
 g1 = Game.create(player: user, board: b1)
-
-#bin/run.rb:99:in `play': undefined local variable or method `b1' for main:Object (NameError)
-
-#tty-prompt for menu
-
-#  - instructions menu
-#  - select difficulty
-#  - exit
-
-# After selecting username and board to play, game = Game.create(player: user, board: board)
-# game.board.display_board or game.display_board?
 
  def get_input
     user_input = []
@@ -69,12 +62,11 @@ end
 
 def move(board, user_input) 
     board.puzzle[input_to_index(user_input)] = user_input[2]
-    binding.pry
     return board.puzzle
-    binding.pry
  end
+
  def updated_display_board(board) 
-    system('cls') 
+    system 'clear'
     board.display_board
  end
  
@@ -83,8 +75,12 @@ def move(board, user_input)
     if valid_move?(user_input, game) 
         move(game.board, user_input) 
         updated_display_board(game.board)
+        congrats = ["Good Job!🎉!!!!🔥!!!!😍", "Yeah!!!😃  😊  👍", "Way to go, Champ!🎉 🥇 🏆 🎉 🥇 🏆 🎉 !!!", "Nice work, I guess 🙄 ... "]
+        puts congrats.sample
     else
-       puts "WRONG!!!!!!!"
+       updated_display_board(game.board)
+       wrong = ["WRONG!!!!! 👎  👎  👎  👎  👎  👎.  ", "Nope! 👺  👹  ❌", "Guess again! 🙅‍♀️  🙅‍♂️  🙅‍♀️  🙅‍♂️."]
+       puts wrong.sample
        turn(game)
     end
  end
@@ -93,21 +89,16 @@ def move(board, user_input)
  end
 
  def total_time(start_time, end_time)
-    total_time = Time.diff(Time.parse(start_time), Time.parse(end_time), '%H %N %S')
+    total_time = Time.diff(Time.parse("#{start_time}"), Time.parse("#{end_time}"), '%h:%m:%s')
     total_time[:diff]
  end
  def play(g1)
     g1.board.display_board
     start_time = Time.now 
     turn(g1) until won?(g1)
-    binding.pry
     puts "Congrats, you ROCK!!!"
-    binding.pry
     end_time = Time.now 
-    binding.pry
     time = total_time(start_time, end_time)
-    binding.pry
     puts "You completed this puzzle in #{time}!"
-    binding.pry
  end
  play(g1)
