@@ -1,22 +1,88 @@
 require_relative '../config/environment'
 require 'pry'
+require 'tty-prompt'
 ActiveRecord::Base.logger = nil
 
 
-puts "Welcome To 💩   doku!!!"
+def display_instructions
+   puts "
+         You don't know how to play 💩 -doku!? Come on!!!
+         The Rules of Sudoku:
 
+         The classic Sudoku game involves a grid of 81 squares.
+         The grid is divided into nine blocks, each containing nine squares.
+
+         The rules of the game are simple: 
+         1. each of the nine blocks has to contain all the numbers 1-9 within its squares. 
+         2. Each number can only appear once in a row, column or box.
+
+         The difficulty lies in that each vertical nine-square column, 
+         or horizontal nine-square line across, within the larger square, 
+         must also contain the numbers 1-9, without repetition or omission.
+
+         Every puzzle has just one correct solution."
+
+   puts "\nFilling out the board:
+
+          For each turn, enter three integers: one for the block of your choice, 
+          one for the position in that block, and finally one for the value you would like to input.  
+          Continue until the board is full and the game is complete!"
+
+   puts "\nFor example: " 
+   puts "                    ================================================"
+   puts "                    ||  This     ||    |         |   || 1 | 2 | 3 ||"
+   puts "    Block 1 =====>  ||  is a     ||    |         |   || 4 | 5 | 6 || <==== These are positions"
+   puts "                    ||  block    ||    | Block 2 |   || 7 | 8 | 9 ||"
+   puts "                    ================================================"
+   puts "                    || |       | ||    |         |   ||   |   |   ||"
+   puts "                    || |       | ||    |         |   ||   |💩  |   || "
+   puts "                    || |Block 4| ||    | Block 5 |   ||  Block 6  ||"
+   puts "                    ================================================"
+   puts "                    || |       | ||    |         |   || |       | ||"
+   puts "                    || |       | ||    |         |   || |       | ||"
+   puts "                    || |Block 7| ||    | Block 8 |   || |Block 9| ||"
+   puts "                    ================================================"
+   
+   puts "\n So, To get to that little ' 💩 ' in Block 6, you'd enter '6' when prompted for a block, a '5' for a position, and then your educated guess for a value"
+end
+
+puts "
+      Welcome To 💩   doku!!!\n"
+
+prompt = TTY::Prompt.new
+choice = prompt.select("\nPick Something Already!!!") do |menu|
+   menu.choice 'Login', 1
+   menu.choice 'Create Account', 2
+   menu.choice 'Instructions', 3
+ end
+
+ if choice == 1
+   login 
+ elsif choice == 2
+   create_account
+ elsif choice == 3
+   display_instructions
+ end
+
+ #----------------------  Creating Account
 puts "Let's get to know each other better - Please enter your name: "
 
 name = gets.chomp
+#--------------------------
+
+#-------------- after logging in or creating account
 puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Let's Play..."
+#-------------------
 
-user = Player.create(name: name)
 
-b1 = Board.create(puzzle: " 💩96💩571💩💩💩4💩82💩9💩💩💩3💩💩💩💩5💩💩💩💩95💩💩4💩💩💩1💩💩💩💩💩9💩💩💩8💩💩26💩💩💩💩4💩💩💩💩2💩💩💩3💩79💩5💩💩💩126💩98💩", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
-#b1 = Board.create(puzzle: " 29635714814582693783714952663958147251276439847839261596481572328347965175126398_", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
-g1 = Game.create(player: user, board: b1)
+#---------- replace this stuff with class method DB pulls
+# user = Player.create(name: name)
 
- def get_input
+# b1 = Board.create(puzzle: " 💩96💩571💩💩💩4💩82💩9💩💩💩3💩💩💩💩5💩💩💩💩95💩💩4💩💩💩1💩💩💩💩💩9💩💩💩8💩💩26💩💩💩💩4💩💩💩💩2💩💩💩3💩79💩5💩💩💩126💩98💩", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+# #b1 = Board.create(puzzle: " 29635714814582693783714952663958147251276439847839261596481572328347965175126398_", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+# g1 = Game.create(player: user, board: b1)
+   
+def get_input
     user_input = []
     puts "Please enter a number (1-9) for the block:"
     user_input << gets.chomp
@@ -25,7 +91,7 @@ g1 = Game.create(player: user, board: b1)
     puts "Please enter a number (1-9) for the value you would like to enter:"
     user_input << gets.chomp
     user_input
- end
+end
 
 def input_valid?(user_input)
     valid = true
