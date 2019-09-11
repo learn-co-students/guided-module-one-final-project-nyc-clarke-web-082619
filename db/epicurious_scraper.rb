@@ -42,12 +42,13 @@ while page_counter_2 < 5 do
 
 
     # Grab name of this recipe and save it to new Recipe instance
+    #recipe_page.css('ul.ingredients li.ingredient').text
     name_of_recipe = recipe_page.css('h1').text
     name_of_recipe.chomp!
     new_recipe = Recipe.new(name: name_of_recipe)
 
-    ingredients_text = recipe_page.css('h2').collect do |recipe_ingredients_list|
-        recipe_ingredients_list.css('li').text
+    ingredients_text = recipe_page.css('ul.ingredients').collect do |recipe_ingredients_list|
+        recipe_ingredients_list.css('li.ingredient').text
     end
 
     binding.pry
