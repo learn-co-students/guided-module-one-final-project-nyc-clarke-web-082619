@@ -36,7 +36,7 @@ end
 page_counter_2 = 0
 recipe_class_array = []
 
-while page_counter_2 < 20 do
+while page_counter_2 < recipe_url_array.length do
     recipe_url = 'https://www.epicurious.com' + recipe_url_array[page_counter_2]
     recipe_page = Nokogiri::HTML.parse(open(recipe_url))
 
