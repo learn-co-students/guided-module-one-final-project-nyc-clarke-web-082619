@@ -46,8 +46,8 @@ while page_counter_2 < 5 do
     name_of_recipe.chomp!
     new_recipe = Recipe.new(name: name_of_recipe)
 
-    ingredients_text = recipe_page.css('.ingredients').collect do |recipe_ingredients_list|
-        recipe_ingredients_list.css('ul').text
+    ingredients_text = recipe_page.css('h2').collect do |recipe_ingredients_list|
+        recipe_ingredients_list.css('li').text
     end
 
     binding.pry
