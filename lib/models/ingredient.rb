@@ -6,6 +6,8 @@ class Ingredient < ActiveRecord::Base
         recipes.map{|rec| rec.name}
     end
 
+    
+
     def self.find_single_ingredient_by_name(ingredient_name)
         self.all.find_by(name: ingredient_name)
     end
@@ -17,7 +19,18 @@ class Ingredient < ActiveRecord::Base
         end
         new_array
     end
+
+    # ------------------new stuff ------------
+
+    def find_recipes_that_use_me_and_create_link
+        my_recipes = Recipe.search_recipe_ingredient_lists_for_ingredient(self)
+
+        my_recipes.each {|recipe| self.recipes << recipe}
+    end
+
 end
+
+
 
 
 #---------------- ORIGINAL CODE ------------------

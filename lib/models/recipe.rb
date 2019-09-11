@@ -46,15 +46,20 @@ class Recipe < ActiveRecord::Base
 
     def self.search_recipe_ingredient_lists_for_ingredient(ingredient)
         #Takes ingredient, returns array of recipes that have that ingredient
+        ingredient_name = ingredient.name.downcase
         Recipe.all.select do |recipe|
             has_ingredient = false
             eval(recipe.ingredient_list).each do |entry| 
-               if entry.include?(ingredient)
+               if entry.downcase.include?(ingredient_name)
                 has_ingredient = true
                end
             end
             has_ingredient
         end
+    end
+
+    def self.print_names_of_recipes_that_include_ingredient(ingredient)
+        search_recipe_ingredient_lists_for_ingredient(ingredient).each {|recipe| puts recipe.name}
     end
 
 
