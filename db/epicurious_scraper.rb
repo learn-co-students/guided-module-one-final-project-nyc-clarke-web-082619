@@ -9,16 +9,20 @@ require_relative '../config/environment'
 doc = Nokogiri::HTML.parse(open('https://www.epicurious.com/search?content=recipe&page=1'))
 #doc.css('h4 a').first.attribute('href').value
 
-page_counter = 1
+
+how_many_pages = 20
+start_page = 21
+end_page = start_page + how_many_pages
+page_counter = 0
 
 
 
 # -------------------- Grab Names of Epicurious Recipes from how_many_pages -------------
 recipe_url_array = []
-how_many_pages = 5
 
-while page_counter <= how_many_pages do
-    search_page = Nokogiri::HTML.parse(open('https://www.epicurious.com/search?content=recipe&page=' + page_counter.to_s))
+
+while (start_page + page_counter) <  end_page do
+    search_page = Nokogiri::HTML.parse(open('https://www.epicurious.com/search?content=recipe&page=' + (start_page + page_counter).to_s))
     title_array = search_page.css('h4').collect do |recipe_title_object|
         recipe_title_object.css('a').attribute('href').value if recipe_title_object.css('a').attribute('href') 
 
@@ -27,6 +31,9 @@ while page_counter <= how_many_pages do
     recipe_url_array.delete("")
     recipe_url_array.compact!
     page_counter += 1
+    # if page_counter % 20 == 0
+    #     puts "Getting Page #{page_counter}"
+    # end
 end
 
 
@@ -64,18 +71,23 @@ while page_counter_2 < recipe_url_array.length do
 
     new_recipe.content = preparation_text
     
-    #Shovels name, ingredient list and content in recipe class array
-    recipe_class_array << new_recipe
+    #Saves the new recipe to the database
+    new_recipe.save
 
 
     # end
     # recipe_url_array.concat(title_array)
     # recipe_url_array.delete("")
     # recipe_url_array.compact!
+
     page_counter_2 += 1
+
+    if page_counter_2 % 50 == 0
+        puts "Getting recipe number #{page_counter_2}"
+    end
 end
 
- recipe_class_array.each {|recipe| recipe.save}
+#  recipe_class_array.each {|recipe| recipe.save}
 
 
 
