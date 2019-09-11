@@ -41,4 +41,22 @@ class Recipe < ActiveRecord::Base
         recipe_list = inclusive_names_from_ingredient_array(ingredient_array)
         recipe_list.each{|item| puts item}
     end 
+
+    #---------------- NEW STUFF WITH SCRAPED DATA ------------
+
+    def self.search_recipe_ingredient_lists_for_ingredient(ingredient)
+        #Takes ingredient, returns array of recipes that have that ingredient
+        Recipe.all.select do |recipe|
+            has_ingredient = false
+            eval(recipe.ingredient_list).each do |entry| 
+               if entry.include?(ingredient)
+                has_ingredient = true
+               end
+            end
+            has_ingredient
+        end
+    end
+
+
+
 end

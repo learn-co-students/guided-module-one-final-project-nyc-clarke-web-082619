@@ -59,7 +59,8 @@ while page_counter_2 < 20 do
     #This is where we are getting the preparation context and shoveling into an array 
     preparation_text = recipe_page.css('li.preparation-step').collect do |preparation_paragraph|
         preparation_paragraph.text.strip
-        end.flatten
+    end.flatten
+
 
     new_recipe.content = preparation_text
     
@@ -74,7 +75,7 @@ while page_counter_2 < 20 do
     page_counter_2 += 1
 end
 
-recipe_class_array.each {|recipe| recipe.save}
+ recipe_class_array.each {|recipe| recipe.save}
 
-binding.pry
+
 
