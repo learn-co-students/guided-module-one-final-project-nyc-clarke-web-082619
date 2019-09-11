@@ -47,8 +47,16 @@ class CommandLineInterface
     end
 
     def prioritized_recipe_search(user_input)
-        user_input = user_input.map { |item| item.capitalize }
-        ingredient_array = Ingredient.find_ingredients_by_name(user_input)
+        user_input = user_input.map { |item| item.downcase }
+        ingredient_array = user_input.map do |item|
+            if Ingredient.find_by(name: item)
+                Ingredient.find_by(name: item)
+            else 
+                new_ingredient = Ingredient.create(name: item)
+                new_ingredient.find_recipes_that_use_me_and_create_link
+                new_ingredient
+            end 
+        end
         Recipe.prioritize_recipes_from_ingredient_array(ingredient_array)
     end
 

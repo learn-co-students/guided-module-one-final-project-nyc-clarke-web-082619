@@ -7,9 +7,10 @@ class Recipe < ActiveRecord::Base
         puts "\n ------ #{self.name} -------\n"
         puts ''
         puts "Ingredients:"
-        self.ingredients.each{|ing| puts " - " + ing.name}
+        eval(self.ingredient_list).each{|ing| puts " - " + ing}
         puts ''
-        puts "Instructions: \n - #{self.content}"
+        puts "Instructions:"
+        eval(self.content).each{|section| puts " - " + section}
 
     end
 
