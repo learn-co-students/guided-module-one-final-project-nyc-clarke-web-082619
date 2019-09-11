@@ -3,6 +3,8 @@ require 'pry'
 require 'tty-prompt'
 ActiveRecord::Base.logger = nil
 
+   puts "
+      Welcome To 💩 -doku!!!\n"
 
 def display_instructions
    puts "
@@ -46,42 +48,32 @@ def display_instructions
    puts "\n So, To get to that little ' 💩 ' in Block 6, you'd enter '6' when prompted for a block, a '5' for a position, and then your educated guess for a value"
 end
 
-puts "
-      Welcome To 💩   doku!!!\n"
+# def create_account(name)
+#    user = Player.create(name: name)
+#    user.save
+#    puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Picking a board..."
+#    user
+# end
 
-prompt = TTY::Prompt.new
-choice = prompt.select("\nPick Something Already!!!") do |menu|
-   menu.choice 'Login', 1
-   menu.choice 'Create Account', 2
-   menu.choice 'Instructions', 3
- end
+# def login(name)
+#       if validate_user(name)
+#          puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Picking a board..."
+#          user = Player.find_by_name(name)
+#       else
+#          puts "Sorry, no such user exists. Redirecting to Create Account"
+#          create_account
+#       end
+#    user
+# end
 
- if choice == 1
-   login 
- elsif choice == 2
-   create_account
- elsif choice == 3
-   display_instructions
- end
+def validate_user(name)
+   if Player.find_by_name(name)
+      true
+   else
+      false
+   end
+end
 
- #----------------------  Creating Account
-puts "Let's get to know each other better - Please enter your name: "
-
-name = gets.chomp
-#--------------------------
-
-#-------------- after logging in or creating account
-puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Let's Play..."
-#-------------------
-
-
-#---------- replace this stuff with class method DB pulls
-# user = Player.create(name: name)
-
-# b1 = Board.create(puzzle: " 💩96💩571💩💩💩4💩82💩9💩💩💩3💩💩💩💩5💩💩💩💩95💩💩4💩💩💩1💩💩💩💩💩9💩💩💩8💩💩26💩💩💩💩4💩💩💩💩2💩💩💩3💩79💩5💩💩💩126💩98💩", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
-# #b1 = Board.create(puzzle: " 29635714814582693783714952663958147251276439847839261596481572328347965175126398_", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
-# g1 = Game.create(player: user, board: b1)
-   
 def get_input
     user_input = []
     puts "Please enter a number (1-9) for the block:"
@@ -167,4 +159,37 @@ def move(board, user_input)
     time = total_time(start_time, end_time)
     puts "You completed this puzzle in #{time}!"
  end
- play(g1)
+ 
+ def start
+   puts "Let's get to know each other better - Please enter your name: "
+   name = gets.chomp
+   user = nil
+   if validate_user(name)
+         puts "Welcome Back, #{name}! Picking a board..."
+         user = Player.find_by_name(name)
+   else
+      #create_account(name)
+       puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Creating an account and picking a board..."
+       user = Player.create(name: name)
+       user.save
+   end
+   pick = Board.all.sample
+   g1 = Game.create(player: user, board: pick)
+   play(g1)
+ end
+ 
+ def enter_menu
+   prompt = TTY::Prompt.new
+   choice = prompt.select("\nPick Something Already!!!") do |menu|
+      menu.choice 'Login or Create Account', 1
+      menu.choice 'Instructions', 2
+   end
+
+   if choice == 1
+      start
+   elsif choice == 2
+      display_instructions
+      enter_menu
+   end
+end
+enter_menu
