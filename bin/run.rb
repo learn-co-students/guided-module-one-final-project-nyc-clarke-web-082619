@@ -74,26 +74,53 @@ def validate_user(name)
    end
 end
 
-def get_input
-    user_input = []
-    puts "Please enter a number (1-9) for the block:"
-    user_input << gets.chomp
-    puts "Please enter a number (1-9) for the position:"
-    user_input << gets.chomp
-    puts "Please enter a number (1-9) for the value you would like to enter:"
-    user_input << gets.chomp
-    user_input
+def input_valid?(user_input)
+   #  valid = true
+   user_input.each do |number|
+      (1..9).include?(number.to_i) #== false
+            # valid = false
+   end
+   #  end
+   #  valid
 end
 
-def input_valid?(user_input)
-    valid = true
-    user_input.each do |number|
-        if (1..9).include?(number.to_i) == false
-            valid = false
-        end
-    end
-    valid
+def get_block_input
+   puts "Please enter a number (1-9) for the block:"
+   user_input = gets.chomp 
+   if (1..9).include?(user_input.to_i)
+      user_input
+   else
+      get_block_input
+   end 
+end 
+
+def get_position_input
+   puts "Please enter a number (1-9) for the position:"
+   user_input = gets.chomp 
+   if (1..9).include?(user_input.to_i)
+      user_input
+   else
+      get_position_input
+   end
 end
+
+def get_value_input
+   puts "Please enter a number (1-9) for the value you would like to enter:"
+   user_input = gets.chomp 
+   if (1..9).include?(user_input.to_i)
+      user_input
+   else
+      get_value_input
+   end
+end 
+
+def get_input
+    user_input = []
+    user_input << get_block_input
+    user_input << get_position_input
+    user_input << get_value_input 
+end
+
 
 def input_to_index(user_input)
     block = (user_input[0].to_i - 1) * 9
@@ -192,4 +219,4 @@ def move(board, user_input)
       enter_menu
    end
 end
-enter_menu
+enter_menu  
