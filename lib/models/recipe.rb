@@ -14,6 +14,23 @@ class Recipe < ActiveRecord::Base
 
     end
 
+    def preview(ingredient_name_array)
+        #Returns a string
+        preview_block = ""
+        preview_block += self.name
+
+
+
+        preview_block
+    end 
+
+    # Template of goal 
+    # weekend fry-up
+    #     1 or 2 eggs
+    #     1-2 slices of bacon
+    #     Salt + fresh pepper
+    #     ... and 6 more ingredients 
+
 
     def self.prioritize_recipes_from_ingredient_array(ingredient_array)
         recipe_array_with_duplicates = ingredient_array.map{|ingredient| ingredient.recipes}.flatten
