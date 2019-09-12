@@ -47,6 +47,7 @@ def display_instructions
    puts "                    ================================================"
    
    puts "\n So, To get to that little ' 💩 ' in Block 6, you'd enter '6' when prompted for a block, a '5' for a position, and then your educated guess for a value"
+   enter_menu
 end
 
 def validate_user(name)
@@ -158,37 +159,69 @@ def move(board, user_input)
     puts "You completed this puzzle in #{time}!"
     enter_menu
  end
+
+ def login(name)
+   if validate_user(name)
+      puts "Welcome Back, #{name}! Picking a board..."
+      user = Player.find_by_name(name)
+      user
+   else
+      puts "no such player exists"
+      account_menu(name)
+   end
+ end
+
+ def create_account(name)
+   if !validate_user(name)
+       puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Creating an account and picking a board..."
+       user = Player.create(name: name)
+       user.save
+       user
+   else
+      puts "Sorry, that name is taken"
+      account_menu(name)
+   end
+ end
+
+ def account_menu(name)
+   account_prompt = TTY::Prompt.new
+   choice = account_prompt.select("Make your choice:") do |menu|
+      menu.choice 'Login', -> {login(name)}
+      menu.choice 'Create Account', -> {create_account(name)}
+   end
+end
  
  def start
    puts "Let's get to know each other better - Please enter your name: "
    name = gets.chomp
-   user = nil
-   if validate_user(name)
-         puts "Welcome Back, #{name}! Picking a board..."
-         user = Player.find_by_name(name)
-   else
-       puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Creating an account and picking a board..."
-       user = Player.create(name: name)
-       user.save
-   end
+   puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!!"
+   sleep(1)
+   user = account_menu(name)
+   binding.pry
+   0
+
+   
+   # if validate_user(name)
+   #       puts "Welcome Back, #{name}! Picking a board..."
+   #       user = Player.find_by_name(name)
+   # else
+   #     puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Creating an account and picking a board..."
+   #     user = Player.create(name: name)
+   #     user.save
+   # end
    #pick = Board.all.sample
    pick = Board.create(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
    g1 = Game.create(player: user, board: pick)
    play(g1)
  end
  
+ 
+
  def enter_menu
    prompt = TTY::Prompt.new
    choice = prompt.select("\nPick Something Already!!!") do |menu|
-      menu.choice 'Login or Create Account', 1
-      menu.choice 'Instructions', 2
-   end
-
-   if choice == 1
-      start
-   elsif choice == 2
-      display_instructions
-      enter_menu
+      menu.choice 'Accounts', -> {start}
+      menu.choice 'Instructions', -> {display_instructions}
    end
 end
 enter_menu  
