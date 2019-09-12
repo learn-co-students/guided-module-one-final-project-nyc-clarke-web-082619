@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190910202053) do
+ActiveRecord::Schema.define(version: 20190912182447) do
 
   create_table "boards", force: :cascade do |t|
     t.string "solution"
     t.string "puzzle"
+    t.string "difficulty"
   end
 
   create_table "games", force: :cascade do |t|
