@@ -189,7 +189,10 @@ def move(board, user_input)
       menu.choice 'Login', -> {login(name)}
       menu.choice 'Create Account', -> {create_account(name)}
    end
-end
+ end
+
+ def board_menu
+   
  
  def start
    puts "Let's get to know each other better - Please enter your name: "
@@ -198,24 +201,11 @@ end
    sleep(1)
    user = account_menu(name)
    binding.pry
-   0
-
-   
-   # if validate_user(name)
-   #       puts "Welcome Back, #{name}! Picking a board..."
-   #       user = Player.find_by_name(name)
-   # else
-   #     puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Creating an account and picking a board..."
-   #     user = Player.create(name: name)
-   #     user.save
-   # end
    #pick = Board.all.sample
    pick = Board.create(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
    g1 = Game.create(player: user, board: pick)
    play(g1)
  end
- 
- 
 
  def enter_menu
    prompt = TTY::Prompt.new
