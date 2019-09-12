@@ -8,6 +8,7 @@ gem "require_all"
 gem "rake"
 gem 'activerecord', '~> 5.0'
 gem 'tty-prompt'
-
+gem 'catpix'
+gem 'markov_chains'
 
 #special thanks to pickupline.net

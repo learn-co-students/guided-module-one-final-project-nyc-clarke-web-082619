@@ -46,12 +46,6 @@ require 'pry'
       end
   end
 
-  def create_profile
-    name = $prompt.ask("What is your name?", required: true){|q| q.modify :capitalize}
-    phone = $prompt.ask("What is your Phone Number", required: true)
-    @current_user = User.create(name: name, phone_number: phone, active_user: true)
-  end
-
   def log_in_to_account
     heart = $prompt.decorate(' 😘 ') 
     login_name = $prompt.select("Welcome back, who are you?", User.pluck(:name), "Exit")
@@ -73,16 +67,7 @@ require 'pry'
       end
   end
 
-  def ruined_lives
-    fired_ppl = Provider.where(employed: false).map(&:name)
-      if fired_ppl.empty?
-        $prompt.error("You could be the first person to wreck someone's life") 
-        look_at_options
-      else 
-        fired_ppl.each{|name| $prompt.keypress("#{name} is now living back at mom's spot.", timeout:3)}
-        look_at_options
-      end
-  end
+  
 
   def set_location
     @location_selection = $prompt.select("Choose your location", ['Hogwarts', 'Mos Eisley Cantina', 'The Gym', 'A Coffee Shop', 'The Dog Park', 'The Beach or Pool', 'A Programming Meetup', 'Democratic National Convention', 'A Bar', 'Another Location', 'Exit'])
@@ -90,6 +75,92 @@ require 'pry'
     @current_user.update(location_id: Location.find_by(name: @location_selection).id)  
   end
   
+  #provider methods
+
+  # def provider_list
+  #   $all_employees = Provider.where(employed:true).map(&:name)
+  #   Provider.where(employed: false).map(&:name).each{|name| $all_employees << {name: name, disabled: "(fired)"}}
+  #   select_provider_and_update_user
+  # end
+
+  def provider_list
+    $all_employees = Provider.where(employed:true).map(&:name)
+    $fired_employees = Provider.where(employed: false)
+    $fired_employees.map(&:name).each{|name| $all_employees << {name: name, disabled: "(fired)"}}
+    if $fired_employees.length == Provider.all.length
+      sleaze_bot_9000_engage
+    else
+    select_provider_and_update_user
+    end
+  end
+
+  def select_provider_and_update_user
+    @provider_selection = $prompt.select("Which one of these assholes you want helping you?", $all_employees, "Exit") 
+    exit_program if @provider_selection == 'Exit'
+    @current_user.update(provider_id: Provider.find_by(name: @provider_selection).id)
+  end
+
+  #bot methods
+  def markov_process
+    text = File.read("/Users/PuffingtonFiles/Desktop/total_data.txt")
+    generator = MarkovChains::Generator.new(text)
+    arr = generator.get_sentences(8)
+    chosen = arr.sort_by{|sent| sent.length}[-3..-1]
+    puts chosen[0]
+    puts "=========="
+    puts chosen[1]
+    puts "=========="
+    puts chosen[2]
+    puts "=========="
+  end
+
+  def sleaze_bot_9000_engage 
+      $prompt.keypress('Sadly, the whole team got fired...', timeout: 2)
+      $prompt.keypress('This means we have to go for the nuclear option', timeout: 1)
+      $prompt.keypress('Get ready for SleazeBot9000!!!!', timeout: 1)
+      init_bot
+      set_bot_location
+  end
+
+  def init_bot
+    @provider_selection = $prompt.select("THERE IS NOW ONLY ONE WHO CAN HELP YOU", 'SleazeBot90000', "Exit") 
+        if @provider_selection == 'Exit'
+          puts 'There is no escape'
+          init_bot 
+        else 
+          Provider.create(name: 'SleazeBot9000', employed: true)
+          @current_user.update(provider_id: Provider.find_by(name: 'SleazeBot9000').id)
+        end
+  end
+
+  def set_bot_location
+    @location_selection = $prompt.select("Choose your location", ['Sleazebot', 'Will', 'Choose', 'What', 'Is', 'Best', 'For', 'You'])
+    @current_user.update(location_id: Location.new(name: 'Bot Heaven'))
+    bot_flow
+  end
+
+  def bot_flow
+    $prompt.keypress('Use these words to receive attention from your targeted mate', timeout: 2)
+    puts ''
+    puts '=========='
+    markov_process
+    puts ''
+    bot_prompt = $prompt.select('Have you successfully mated?', %w(Yes No Exit))
+    puts ''
+      if bot_prompt == 'Yes'
+        exit_program
+      else 
+        bot_accept
+      end
+  end
+
+  def bot_accept
+    puts "You can't give up now! Here are more options!"
+    bot_flow
+  end
+
+  #pickup_line generation methods
+
   def pickup_lines_for_location
     @users_location_lines = PickupLine.all.select{|line| line.location_id == @current_user.location_id} 
   end
@@ -141,39 +212,7 @@ require 'pry'
     $prompt.keypress("You're right, they sucked, firing your provider now....", timeout:1)
     $prompt.keypress("They took it pretty okay, said they're gonna go finish school or something!", timeout:1)
   end
-
-  def provider_list
-    $all_employees = Provider.where(employed:true).map(&:name)
-    Provider.where(employed: false).map(&:name).each{|name| $all_employees << {name: name, disabled: "(fired)"}}
-    select_provider_and_update_user
-  end
   
-  def select_provider_and_update_user
-    @provider_selection = $prompt.select("Which one of these assholes you want helping you?", $all_employees, "Exit")  #remove?
-    exit_program if @provider_selection == 'Exit'
-    @current_user.update(provider_id: Provider.find_by(name: @provider_selection).id)
-  end
-
-  def retry?
-    response = $prompt.select("Would you like to try again?", %w(Choose\ another\ provider Exit Cancel\ Membership))
-      if response == 'Choose another provider'     
-        provider_list
-        flow
-      elsif response == 'Exit'
-        exit_program
-      else
-        cancel_membership
-      end
-  end
-
-
-  $attempt_line_msg1 =  "Alright, so based on your location, here's a pretty solid line:"
-  $attempt_line_msg2 = 'my b on that, try this:'
-  $attempt_line_msg3 = 'Ok, this will deff work'
-  $accept_pass1 = 'Did they buy it?'
-  $accept_pass2 = "You guys must be on your way to your place by now, right?"
-  $accept_pass3 = "If this doesn't work that person is whack."
-
   def flow
     attempt_line($attempt_line_msg1)
       if accept_or_pass?($accept_pass1) == false
@@ -194,11 +233,50 @@ require 'pry'
       end    
   end
 
+  def retry?
+    response = $prompt.select("Would you like to try again?", %w(Choose\ another\ provider Exit Cancel\ Membership))
+      if response == 'Choose another provider'     
+        provider_list
+        flow
+      elsif response == 'Exit'
+        exit_program
+      else
+        cancel_membership
+      end
+  end
+
   def try_again?
     retry?
     random_line
     begin_generation
     flow   
+  end
+
+  #methods never directly called/variables
+
+  $attempt_line_msg1 =  "Alright, so based on your location, here's a pretty solid line:"
+  $attempt_line_msg2 = 'my b on that, try this:'
+  $attempt_line_msg3 = 'Ok, this will deff work'
+  $accept_pass1 = 'Did they buy it?'
+  $accept_pass2 = "You guys must be on your way to your place by now, right?"
+  $accept_pass3 = "If this doesn't work that person is whack."
+
+  
+  def create_profile
+    name = $prompt.ask("What is your name?", required: true){|q| q.modify :capitalize}
+    phone = $prompt.ask("What is your Phone Number", required: true)
+    @current_user = User.create(name: name, phone_number: phone, active_user: true)
+  end
+
+  def ruined_lives
+    fired_ppl = Provider.where(employed: false).map(&:name)
+      if fired_ppl.empty?
+        $prompt.error("You could be the first person to wreck someone's life") 
+        look_at_options
+      else 
+        fired_ppl.each{|name| $prompt.keypress("#{name} is now living back at mom's spot.", timeout:3)}
+        look_at_options
+      end
   end
 
   def all_that_worked
