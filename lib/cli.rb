@@ -36,7 +36,6 @@ class CommandLineInterface
                 menu.choice recipe.preview(ingredient_name_array), -> { recipe.display_recipe_info }
             end
         end
-        # display_recipe_details(chosen_recipe)
     end
 
     def ask_for_required_ingredients
