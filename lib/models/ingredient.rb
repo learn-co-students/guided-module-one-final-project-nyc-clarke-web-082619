@@ -1,6 +1,8 @@
 class Ingredient < ActiveRecord::Base
     has_many :ingredients_recipes
     has_many :recipes, through: :ingredients_recipes
+    has_many :profiles_ingredients
+    has_many :profiles, through: :profiles_ingredients
 
     def recipe_names
         recipes.map{|rec| rec.name}

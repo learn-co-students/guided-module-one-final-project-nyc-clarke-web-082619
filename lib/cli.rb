@@ -31,7 +31,6 @@ class CommandLineInterface
                 menu.choice recipe.name, -> { recipe.display_recipe_info }
             end
         end
-        # display_recipe_details(chosen_recipe)
     end
 
     def ask_for_required_ingredients

@@ -1,6 +1,8 @@
 class Recipe < ActiveRecord::Base
     has_many :ingredients_recipes
     has_many :ingredients, through: :ingredients_recipes
+    has_many :profiles_recipes
+    has_many :profiles, through: :profiles_recipes
 
     def display_recipe_info
 
