@@ -20,6 +20,15 @@ class Recipe < ActiveRecord::Base
         #Returns a string
         preview_block = ""
         preview_block += self.name
+        featured_ingredients = ingredient_name_array.map do |ingredient_name|
+            eval(self.ingredient_list).find{|line| line.include?(ingredient_name)}
+        end
+
+        
+        featured_ingredients.each do |item|
+
+            preview_block += " \n       - #{item}" if item
+        end
 
 
 
