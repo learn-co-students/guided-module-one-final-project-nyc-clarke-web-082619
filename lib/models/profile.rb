@@ -3,4 +3,29 @@ class Profile < ActiveRecord::Base
     has_many :profiles_recipes
     has_many :recipes, through: :profiles_recipes
     has_many :ingredients, through: :profiles_ingredients
+
+    def self.check_profile_name_availability(username)
+        if Profile.all.find_by(name: username)
+            return false
+        else
+            return true
+        end
+    end
+
+    def self.create_profile_with_name(username)
+        self.create(name: username)
+    end
+
+    def self.create_profile_with_name_if_available(username)
+        username.downcase!
+        if self.check_profile_name_availability(username)
+            self.create_profile_with_name(username)
+        else
+            return false
+        end
+    end
+
+    def welcome_user
+        puts "Welcome #{self.name}!"
+    end
 end 
