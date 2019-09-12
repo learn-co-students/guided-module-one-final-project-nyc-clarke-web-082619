@@ -11,7 +11,7 @@ doc = Nokogiri::HTML.parse(open('https://www.epicurious.com/search?content=recip
 
 
 how_many_pages = 20
-start_page = 21
+start_page = 81
 end_page = start_page + how_many_pages
 page_counter = 0
 
