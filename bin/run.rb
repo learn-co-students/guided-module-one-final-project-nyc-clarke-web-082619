@@ -3,9 +3,10 @@ require 'pry'
 require 'tty-prompt'
 ActiveRecord::Base.logger = nil
 
+binding.pry
+
    puts "
       Welcome To 💩 -doku!!!\n"
-      binding.pry
 
 def display_instructions
    puts "
