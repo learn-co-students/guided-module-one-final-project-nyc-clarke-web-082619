@@ -20,6 +20,8 @@ class Board < ActiveRecord::Base
         puts "=================================================="
     end
 
-    
+    def self.get_difficulty(difficulty)
+        Board.all.select {|board| board.difficulty == "#{difficulty}"}.sample
+    end 
 
 end
