@@ -11,7 +11,11 @@ class CommandLineInterface
                 # find recipes that match
                 recipe_instances = prioritized_recipe_search(user_input)
                 # users pick from those recipes, then show detail
-                choose_recipes(recipe_instances)
+                if recipe_instances.length == 0 
+                    puts "Sorry, no recipes found for any of those ingredients."
+                else
+                    choose_recipes(recipe_instances)
+                end
                 UI.keypress("Press Enter to go back")
                 main_menu
             end
@@ -21,7 +25,7 @@ class CommandLineInterface
           end
     end
 
-    def choose_recipes(recipe_instances)
+    def choose_recipes(recipe_instances) 
         chosen_recipe = UI.select("Select a recipe:") do |menu|
             recipe_instances.each do |recipe|
                 menu.choice recipe.name, -> { recipe.display_recipe_info }
