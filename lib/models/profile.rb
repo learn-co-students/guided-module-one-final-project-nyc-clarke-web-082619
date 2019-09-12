@@ -28,4 +28,22 @@ class Profile < ActiveRecord::Base
     def welcome_user
         puts "Welcome #{self.name}!"
     end
+
+    def add_ingredient(ingredient)
+        if !self.ingredients.include?(ingredient) 
+            self.ingredients << ingredient
+        end
+    end
+
+    def add_recipe(recipe)
+        self.recipes << recipe
+    end
+
+    def ingredient_names
+        self.ingredients.map {|ingredient| ingredient.name}
+    end
+
+    def remove_ingredient(ingredient)
+        self.ingredients.delete(ingredient)
+    end
 end 

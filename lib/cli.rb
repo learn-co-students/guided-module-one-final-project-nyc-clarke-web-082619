@@ -22,6 +22,40 @@ class CommandLineInterface
 
     def go_to_profile_page(profile)
         profile.welcome_user
+        UI.select("What would you like to do?") do |menu|
+            menu.choice 'See my ingredients', -> do
+                display_ingredient_names(profile.ingredient_names)
+                go_to_profile_page(profile)
+            end
+            menu.choice 'Add an ingredient', -> do
+                ask_for_ingredient_and_add(profile)
+                go_to_profile_page(profile)
+            end
+            menu.choice 'Return to Main Menu', -> do
+                main_menu
+            end
+        end
+    end
+
+    def display_ingredient_names(ingredient_names)
+        ingredient_names.each {|name| puts "       - #{name}"}
+    end
+
+    def ask_for_ingredient_and_add(profile)
+        ingredient_name = UI.ask('Enter the name of the ingredient you would like to add (Enter "q" to go back to main):') do |q|
+            q.required true
+            q.modify :down, :trim
+        end
+
+        if ingredient_name == 'q'
+            return
+        elsif Ingredient.find_by(name: ingredient_name)
+            new_ingredient = Ingredient.find_by(name: ingredient_name)
+            profile.add_ingredient(new_ingredient)
+        else 
+            new_ingredient = Ingredient.create(name: ingredient_name)
+            profile.add_ingredient(new_ingredient)
+        end
     end
 
     def sign_in_to_profile
