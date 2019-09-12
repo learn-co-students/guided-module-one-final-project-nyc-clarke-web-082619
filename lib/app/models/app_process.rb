@@ -5,6 +5,35 @@ require 'pry'
     puts "Welcome to The Real-Time, In a Bind, Online, Pickup Line Hotline!"
   end
 
+  #def play_song
+    #%x(afplay /Users/PuffingtonFiles/Desktop/butterfly.wav)
+  #end
+
+  #def say_line
+    #%x(say 'hell fucking yes')
+  #end
+
+  #def show_pic 
+#   require 'catpix'
+# Catpix::print_image "/Users/PuffingtonFiles/Desktop/pickupline.jpg",
+#   :limit_x => 1.0,
+#   :limit_y => 0,
+#   :center_x => true,
+#   :center_y => true,
+#   :bg => "white",
+#   :bg_fill => true,
+#   :resolution => "low"
+#end
+
+#def markov_chains
+#require 'markov_chains'
+#text = File.read("/Users/PuffingtonFiles/Desktop/pickup_lines.txt")
+#generator = MarkovChains::Generator.new(text)
+#generator.get_sentences(5)
+#generate 5-10, store in an array and select the three longest
+#then use them in place of the three random ones
+#end
+
   def log_in_screen
     input = $prompt.select("Asuuuh?", %w(Create\ Profile Login Exit))
       if input == 'Create Profile'
