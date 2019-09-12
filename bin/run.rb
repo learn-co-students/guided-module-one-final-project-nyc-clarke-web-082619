@@ -192,7 +192,13 @@ def move(board, user_input)
  end
 
  def board_menu
-   
+   board_prompt = TTY::Prompt.new
+   choice = board_prompt.select("") do |menu|
+      menu.choice 'Easy', -> {Board.get_difficulty("Easy")} 
+      menu.choice 'Medium', -> {Board.get_difficulty("Medium")}
+      menu.choice 'Hard', -> {Board.get_difficulty("Hard")}
+   end  
+ end 
  
  def start
    puts "Let's get to know each other better - Please enter your name: "
@@ -200,10 +206,10 @@ def move(board, user_input)
    puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!!"
    sleep(1)
    user = account_menu(name)
-   binding.pry
+   levels = board_menu 
    #pick = Board.all.sample
-   pick = Board.create(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
-   g1 = Game.create(player: user, board: pick)
+   # pick = Board.create(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+   g1 = Game.create(player: user, board: levels)
    play(g1)
  end
 
