@@ -7,6 +7,7 @@ class CommandLineInterface
         UI.select("What would you like to do?") do |menu|
             menu.choice 'Log In', -> do 
                 sign_in_to_profile
+                main_menu
             end
             menu.choice 'Create New Profile', -> do 
                 create_profile_menu
@@ -21,28 +22,34 @@ class CommandLineInterface
     end
 
     def go_to_profile_page(profile)
-        profile.welcome_user
         UI.select("What would you like to do?") do |menu|
             menu.choice 'See my ingredients', -> do
+                puts `clear`
                 display_ingredient_names(profile.ingredient_names)
                 go_to_profile_page(profile)
             end
-            menu.choice 'Add an ingredient', -> do
+            menu.choice 'Add an ingredient to my list', -> do
                 ask_for_ingredient_and_add(profile)
                 go_to_profile_page(profile)
             end
+            menu.choice 'Remove an ingredient from my list', -> do
+                ask_for_ingredient_and_remove(profile)
+                go_to_profile_page(profile)
+            end
             menu.choice 'Return to Main Menu', -> do
-                main_menu
+                return
             end
         end
     end
 
     def display_ingredient_names(ingredient_names)
+        puts 'My ingredients:'
         ingredient_names.each {|name| puts "       - #{name}"}
+        puts ''
     end
 
     def ask_for_ingredient_and_add(profile)
-        ingredient_name = UI.ask('Enter the name of the ingredient you would like to add (Enter "q" to go back to main):') do |q|
+        ingredient_name = UI.ask('Enter the name of the ingredient you would like to add (Enter "q" to go back to profile menu):') do |q|
             q.required true
             q.modify :down, :trim
         end
@@ -58,6 +65,23 @@ class CommandLineInterface
         end
     end
 
+    def ask_for_ingredient_and_remove(profile)
+        ingredient_name = UI.ask('Enter the name of the ingredient you would like to remove (Enter "q" to go back to profile menu):') do |q|
+            q.required true
+            q.modify :down, :trim
+        end
+
+        if ingredient_name == 'q'
+            return
+        elsif Ingredient.find_by(name: ingredient_name)
+            new_ingredient = Ingredient.find_by(name: ingredient_name)
+            profile.remove_ingredient(new_ingredient)
+        else 
+            puts "You don't have any #{ingredient_name} in your list."
+            return
+        end
+    end
+
     def sign_in_to_profile
         name_input = UI.ask('Enter your profile name: (Enter "q" to go back):') do |q|
             q.required true
@@ -65,17 +89,18 @@ class CommandLineInterface
         end
 
         if name_input == 'q'
-            main_menu
+            return
         else
             user_profile = Profile.find_by(name: name_input)
             if user_profile.class == Profile
+                user_profile.welcome_user
                 go_to_profile_page(user_profile)
-                UI.keypress("Press Enter to go back", keys: [:return])
-                main_menu
+               #UI.keypress("Press Enter to go back", keys: [:return])
+                return
             else
                 puts "Sorry, that profile was not found."
                 UI.keypress("Press Enter to go back", keys: [:return])
-                main_menu
+                return
             end
         end
 
