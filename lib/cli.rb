@@ -207,14 +207,12 @@ class CommandLineInterface
     def greet
         puts '----------------------Welcome to the PantrySweeper!----------------------------'
         puts 'The app that helps you clean out your pantry using recipes from Epicurious.com!'
-        puts '                         *   *   *   *   *  *'
+        puts '                          *   *   *   *   *  *'
         puts ''
     end
 
     def inclusive_recipe_search(user_input)
-        user_input = user_input.map { |item| item.capitalize }
-        ingredient_array = Ingredient.find_ingredients_by_name(user_input)
-        Recipe.inclusive_recipes_from_ingredient_array(ingredient_array)
+        user_input = user_input.map { |item| item.capitalize } array)
     end
 
     def prioritized_recipe_search(user_input)
