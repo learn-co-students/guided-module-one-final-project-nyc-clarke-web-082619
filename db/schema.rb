@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20190912182447) do
   create_table "games", force: :cascade do |t|
     t.time    "start_time"
     t.time    "end_time"
-    t.float   "total_time"
+    t.string  "total_time"
     t.integer "board_id"
     t.integer "player_id"
   end

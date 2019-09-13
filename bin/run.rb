@@ -150,12 +150,14 @@ def move(board, user_input)
  def play(g1)
     system'clear'
     g1.board.display_board
-    start_time = Time.now 
+    g1.start_time = Time.now 
     turn(g1) until won?(g1)
     puts "Congrats, you ROCK!!!"
-    end_time = Time.now 
-    time = total_time(start_time, end_time)
-    puts "You completed this puzzle in #{time}!"
+    g1.end_time = Time.now 
+    g1.total_time = total_time(g1.start_time, g1.end_time)
+    puts "You completed this puzzle in #{g1.total_time}!"
+    g1.save
+    binding.pry
  end
 
  def login(name)
@@ -208,6 +210,10 @@ def move(board, user_input)
  end 
 
  def display_best_time
+
+
+
+
  end
 
  def play_again_menu(user)
@@ -219,10 +225,9 @@ def move(board, user_input)
    end
  end
 
-
  def play_again(user)
       if user.name == "demo"
-         levels = Board.create(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+         levels = Board.find_by(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984")
       else 
          levels = board_menu 
       end
