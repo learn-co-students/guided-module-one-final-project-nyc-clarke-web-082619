@@ -3,6 +3,7 @@ require 'pry'
 require 'tty-prompt'
 ActiveRecord::Base.logger = nil
 
+   system'clear'
 
    puts "
       Welcome To 💩 -doku!!!\n"
@@ -10,7 +11,7 @@ ActiveRecord::Base.logger = nil
 def display_instructions
    puts "
          You don't know how to play 💩 -doku!? Come on!!!
-         The Rules of Sudoku:
+         The Rules of 💩 -doku:
 
          The classic Sudoku game involves a grid of 81 squares.
          The grid is divided into nine blocks, each containing nine squares.
@@ -46,6 +47,7 @@ def display_instructions
    puts "                    || |Block 7| ||    | Block 8 |   || |Block 9| ||"
    puts "                    ================================================"
    
+   puts " 💩 -doku uses those same rules, but with  💩  instead of black spaces!"
    puts "\n So, To get to that little ' 💩 ' in Block 6, you'd enter '6' when prompted for a block, a '5' for a position, and then your educated guess for a value"
    enter_menu
 end
@@ -59,18 +61,14 @@ def validate_user(name)
 end
 
 def input_valid?(user_input)
-   #  valid = true
    user_input.each do |number|
-      (1..9).include?(number.to_i) #== false
-            # valid = false
+      (1..9).include?(number.to_i)
    end
-   #  end
-   #  valid
 end
 
 def get_user_input
    user_input = gets.chomp 
-   if user_input == 'enter menu'
+   if user_input == 'menu'
       system 'clear'
       enter_menu
    elsif user_input == 'quit'
@@ -84,7 +82,7 @@ def get_user_input
 end
 
 def get_input
-   puts "Please follow the prompts, or type 'enter menu' to go back to menu:"
+   puts "Please follow the prompts, or type 'menu' to go back to menu:"
     user_input = []
     puts "Please enter a number (1-9) for the block:"
     user_input << get_user_input
@@ -150,14 +148,16 @@ def move(board, user_input)
     total_time[:diff]
  end
  def play(g1)
+    system'clear'
     g1.board.display_board
-    start_time = Time.now 
+    g1.start_time = Time.now 
     turn(g1) until won?(g1)
     puts "Congrats, you ROCK!!!"
-    end_time = Time.now 
-    time = total_time(start_time, end_time)
-    puts "You completed this puzzle in #{time}!"
-    enter_menu
+    g1.end_time = Time.now 
+    g1.total_time = total_time(g1.start_time, g1.end_time)
+    puts "You completed this puzzle in #{g1.total_time}!"
+    g1.save
+    binding.pry
  end
 
  def login(name)
@@ -166,19 +166,28 @@ def move(board, user_input)
       user = Player.find_by_name(name)
       user
    else
-      puts "no such player exists"
+      system'clear'
+      puts "Hey, you don't have an account! Select 'Create Account' instead"
       account_menu(name)
    end
  end
 
  def create_account(name)
    if !validate_user(name)
-       puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! Woo! Creating an account and picking a board..."
+      sleep(1)
+       puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!! "
+       puts "Woo! Creating an account.... "
+       sleep(1)
+       puts "PROCESSING!!!!!!!!"
+       sleep(2)
+       puts "Account created. Let's pick a board..."
        user = Player.create(name: name)
        user.save
        user
    else
-      puts "Sorry, that name is taken"
+      sleep(1)
+      system'clear'
+      puts "Sorry, that name is already taken\n"
       account_menu(name)
    end
  end
@@ -199,18 +208,45 @@ def move(board, user_input)
       menu.choice 'Hard', -> {Board.get_difficulty("Hard")}
    end  
  end 
- 
- def start
-   puts "Let's get to know each other better - Please enter your name: "
-   name = gets.chomp
-   puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!!"
-   sleep(1)
-   user = account_menu(name)
-   levels = board_menu 
-   #pick = Board.all.sample
-   # pick = Board.create(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984", solution: " 296357148145826937837149526639581472512764398478392615964815723283479651751263984")
+
+ def display_best_time
+
+
+
+
+ end
+
+ def play_again_menu(user)
+   play_prompt = TTY::Prompt.new
+   choice = play_prompt.select('') do |menu|
+      menu.choice 'Play Again?', -> {play_again(user)}
+      menu.choice 'Logout', -> {enter_menu}
+      menu.choice 'Quit', -> {system(exit)}
+   end
+ end
+
+ def play_again(user)
+      if user.name == "demo"
+         levels = Board.find_by(puzzle: " 2963571481458269378371💩952663958147251276439847💩392615964815723283479651751263984")
+      else 
+         levels = board_menu 
+      end
    g1 = Game.create(player: user, board: levels)
    play(g1)
+   play_again_menu(user)
+ end
+ 
+ def start
+   sleep(1)
+   puts "\nLet's get to know each other better - Please enter your name, or type 'quit' to exit the program"
+   name = gets.chomp
+      if name == 'quit'
+         system(exit)
+      end
+   puts "Hey there, #{name}!!!!!!!!!!!!!!!!!!!!!"
+   sleep(1)
+   user = account_menu(name)  
+   play_again(user)
  end
 
  def enter_menu
@@ -218,6 +254,7 @@ def move(board, user_input)
    choice = prompt.select("\nPick Something Already!!!") do |menu|
       menu.choice 'Accounts', -> {start}
       menu.choice 'Instructions', -> {display_instructions}
+      menu.choice 'Quit', -> {system(exit)}
    end
 end
 enter_menu  

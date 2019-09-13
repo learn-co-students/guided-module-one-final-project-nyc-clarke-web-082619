@@ -4,6 +4,11 @@ class Board < ActiveRecord::Base
 
 
     def display_board
+
+        
+        puts "The best time for this board is:  #{best_time}   "
+       
+
         board1 = self.puzzle
         puts "=================================================="
         puts "|| #{board1[1]}  | #{board1[2]}  | #{board1[3]}  || #{board1[10]}  | #{board1[11]}  | #{board1[12]}  || #{board1[19]}  | #{board1[20]}  | #{board1[21]}  ||"
@@ -23,5 +28,17 @@ class Board < ActiveRecord::Base
     def self.get_difficulty(difficulty)
         Board.all.select {|board| board.difficulty == "#{difficulty}"}.sample
     end 
+
+    def get_times
+        Game.all.collect {|game| game.total_time if game.board == self}.select {|time| time != nil}
+    end
+
+    def best_time
+        total_times = self.get_times
+        total_times.min
+    end
+
+
+
 
 end
