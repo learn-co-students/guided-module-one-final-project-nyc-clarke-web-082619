@@ -1,3 +1,4 @@
+
 class Board < ActiveRecord::Base
     has_many :games
     has_many :players, through: :games 

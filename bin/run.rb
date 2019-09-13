@@ -152,7 +152,8 @@ def move(board, user_input)
     g1.board.display_board
     g1.start_time = Time.now 
     turn(g1) until won?(g1)
-    puts "Congrats, you ROCK!!!"
+    good_job = ["Congrats, you ROCK!!!", "I wish my kids were as smart as you...", "Wowee Zowee, you sure are great!!!", "You finished that much faster than that other guy... "]
+    puts good_job.sample
     g1.end_time = Time.now 
     g1.total_time = total_time(g1.start_time, g1.end_time)
     puts "You completed this puzzle in #{g1.total_time}!"
