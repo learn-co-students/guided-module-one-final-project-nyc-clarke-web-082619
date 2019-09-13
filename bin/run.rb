@@ -157,7 +157,6 @@ def move(board, user_input)
     g1.total_time = total_time(g1.start_time, g1.end_time)
     puts "You completed this puzzle in #{g1.total_time}!"
     g1.save
-    binding.pry
  end
 
  def login(name)
@@ -208,13 +207,6 @@ def move(board, user_input)
       menu.choice 'Hard', -> {Board.get_difficulty("Hard")}
    end  
  end 
-
- def display_best_time
-
-
-
-
- end
 
  def play_again_menu(user)
    play_prompt = TTY::Prompt.new
