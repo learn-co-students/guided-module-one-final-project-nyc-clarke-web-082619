@@ -1,40 +1,38 @@
 
 require 'pry'
+
+def intro
+   t1 = Thread.new do 
+     show_pic
+   end
+   play_song("/Users/PuffingtonFiles/Desktop/butterfly.wav")
+end
+
   def greeting
-    #add a photo, sound etc
     puts "Welcome to The Real-Time, In a Bind, Online, Pickup Line Hotline!"
   end
 
-  #def play_song
-    #%x(afplay /Users/PuffingtonFiles/Desktop/butterfly.wav)
-  #end
+  def play_song(file)
+    %x(afplay "#{file}")
+  end
 
-  #def say_line
-    #%x(say 'hell fucking yes')
-  #end
+  def say_line(msg)
+    %x(say "#{msg}")
+  end
 
-  #def show_pic 
-#   require 'catpix'
-# Catpix::print_image "/Users/PuffingtonFiles/Desktop/pickupline.jpg",
-#   :limit_x => 1.0,
-#   :limit_y => 0,
-#   :center_x => true,
-#   :center_y => true,
-#   :bg => "white",
-#   :bg_fill => true,
-#   :resolution => "low"
-#end
-
-#def markov_chains
-#require 'markov_chains'
-#text = File.read("/Users/PuffingtonFiles/Desktop/pickup_lines.txt")
-#generator = MarkovChains::Generator.new(text)
-#generator.get_sentences(5)
-#generate 5-10, store in an array and select the three longest
-#then use them in place of the three random ones
-#end
+   def show_pic 
+   Catpix::print_image "/Users/PuffingtonFiles/Desktop/pickupline.jpg",
+   :limit_x => 1.0,
+   :limit_y => 0,
+   :center_x => true,
+   :center_y => true,
+   :bg => "white",
+   :bg_fill => true,
+   :resolution => "low"
+  end
 
   def log_in_screen
+    puts ""
     input = $prompt.select("Asuuuh?", %w(Create\ Profile Login Exit))
       if input == 'Create Profile'
         create_profile
@@ -55,7 +53,7 @@ require 'pry'
   end
 
   def look_at_options
-    options = ['Get a line', 'See what worked', "Lives you've ruined"]
+    options = ['Get a new Pickup line', 'See what lines already worked', "See who we've fired"]
     input = $prompt.select("So What's good?", options)
       if input == options[0]
         provider_list
@@ -67,8 +65,6 @@ require 'pry'
       end
   end
 
-  
-
   def set_location
     @location_selection = $prompt.select("Choose your location", ['Hogwarts', 'Mos Eisley Cantina', 'The Gym', 'A Coffee Shop', 'The Dog Park', 'The Beach or Pool', 'A Programming Meetup', 'Democratic National Convention', 'A Bar', 'Another Location', 'Exit'])
     exit_program if @provider_selection == 'Exit'
@@ -76,12 +72,6 @@ require 'pry'
   end
   
   #provider methods
-
-  # def provider_list
-  #   $all_employees = Provider.where(employed:true).map(&:name)
-  #   Provider.where(employed: false).map(&:name).each{|name| $all_employees << {name: name, disabled: "(fired)"}}
-  #   select_provider_and_update_user
-  # end
 
   def provider_list
     $all_employees = Provider.where(employed:true).map(&:name)
@@ -95,7 +85,7 @@ require 'pry'
   end
 
   def select_provider_and_update_user
-    @provider_selection = $prompt.select("Which one of these assholes you want helping you?", $all_employees, "Exit") 
+    @provider_selection = $prompt.select("Which one of these a-holes you want helping you?", $all_employees, "Exit") 
     exit_program if @provider_selection == 'Exit'
     @current_user.update(provider_id: Provider.find_by(name: @provider_selection).id)
   end
@@ -117,15 +107,18 @@ require 'pry'
   def sleaze_bot_9000_engage 
       $prompt.keypress('Sadly, the whole team got fired...', timeout: 2)
       $prompt.keypress('This means we have to go for the nuclear option', timeout: 1)
+      say_line('Get ready for Sleaze Bot 9000')
       $prompt.keypress('Get ready for SleazeBot9000!!!!', timeout: 1)
       init_bot
       set_bot_location
   end
 
   def init_bot
+    say_line('Choose your destiny')
     @provider_selection = $prompt.select("THERE IS NOW ONLY ONE WHO CAN HELP YOU", 'SleazeBot90000', "Exit") 
         if @provider_selection == 'Exit'
-          puts 'There is no escape'
+          say_line('There is no escape')
+          $prompt.error('There is no escape')
           init_bot 
         else 
           Provider.create(name: 'SleazeBot9000', employed: true)
@@ -134,6 +127,7 @@ require 'pry'
   end
 
   def set_bot_location
+    say_line('Your brain is small and I will make all of your decisions')
     @location_selection = $prompt.select("Choose your location", ['Sleazebot', 'Will', 'Choose', 'What', 'Is', 'Best', 'For', 'You'])
     @current_user.update(location_id: Location.new(name: 'Bot Heaven'))
     bot_flow
@@ -145,9 +139,11 @@ require 'pry'
     puts '=========='
     markov_process
     puts ''
+    say_line('are you doing the no pants dance?')
     bot_prompt = $prompt.select('Have you successfully mated?', %w(Yes No Exit))
     puts ''
       if bot_prompt == 'Yes'
+        say_line('giggity')
         exit_program
       else 
         bot_accept
@@ -155,7 +151,8 @@ require 'pry'
   end
 
   def bot_accept
-    puts "You can't give up now! Here are more options!"
+    say_line('I am in control')
+    $prompt.error("You can't give up now! Here are more options!")
     bot_flow
   end
 
@@ -208,9 +205,9 @@ require 'pry'
 
   def complaint
     $prompt.multiline("Write your complaint here:")
-    $prompt.keypress("Reading complaint....", timeout:2)
-    $prompt.keypress("You're right, they sucked, firing your provider now....", timeout:1)
-    $prompt.keypress("They took it pretty okay, said they're gonna go finish school or something!", timeout:1)
+    $prompt.keypress("Reading complaint....", timeout:3)
+    $prompt.keypress("You're right, they sucked, firing your provider now....", timeout:2)
+    $prompt.keypress("They took it pretty okay, said they're gonna go finish school or something!", timeout:2)
   end
   
   def flow
@@ -256,10 +253,10 @@ require 'pry'
 
   $attempt_line_msg1 =  "Alright, so based on your location, here's a pretty solid line:"
   $attempt_line_msg2 = 'my b on that, try this:'
-  $attempt_line_msg3 = 'Ok, this will deff work'
+  $attempt_line_msg3 = 'Ok, this will deff work, if not that person is whack'
   $accept_pass1 = 'Did they buy it?'
   $accept_pass2 = "You guys must be on your way to your place by now, right?"
-  $accept_pass3 = "If this doesn't work that person is whack."
+  $accept_pass3 = "Please tell me that worked, I don't wanna get fired."
 
   
   def create_profile
@@ -299,6 +296,7 @@ require 'pry'
   end
   
   def exit_program
+    play_song("/Users/PuffingtonFiles/Desktop/bye_bye.wav")
     puts 'Go get some, dawg.'
     exit!
   end
