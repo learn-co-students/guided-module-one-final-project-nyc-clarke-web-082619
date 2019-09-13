@@ -26,6 +26,13 @@ class CommandLineInterface
             menu.choice 'See my ingredients', -> do
                 puts `clear`
                 display_ingredient_names(profile.ingredient_names)
+                # new method here
+                go_to_profile_page(profile)
+            end
+            menu.choice 'Find recipes for my ingredients', -> do
+                puts `clear`
+                find_recipes_for_profile_ingredients(profile, profile.ingredient_names)
+                # new method here
                 go_to_profile_page(profile)
             end
             menu.choice 'Add an ingredient to my list', -> do
@@ -39,6 +46,20 @@ class CommandLineInterface
             menu.choice 'Return to Main Menu', -> do
                 return
             end
+        end
+    end
+
+    def find_recipes_for_profile_ingredients(profile, ingredient_names)
+        user_input = UI.multi_select("Select ingredients to search (space to select, enter to finish)", ingredient_names)
+        # find recipes that match
+
+        recipe_instances = prioritized_recipe_search(user_input)
+         
+        # # users pick from those recipes, then show detail
+         if recipe_instances.length == 0 
+             puts "Sorry, no recipes found for any of those ingredients."
+        else
+             choose_recipes(recipe_instances, user_input)
         end
     end
 
@@ -61,6 +82,7 @@ class CommandLineInterface
             profile.add_ingredient(new_ingredient)
         else 
             new_ingredient = Ingredient.create(name: ingredient_name)
+            new_ingredient.find_recipes_that_use_me_and_create_link
             profile.add_ingredient(new_ingredient)
         end
     end
@@ -130,6 +152,7 @@ class CommandLineInterface
                 end
                 yes_no_menu.choice 'No', -> do
                     UI.keypress("Press Enter to go back to the main menu", keys: [:return])
+
                     main_menu
                 end
             end
@@ -153,6 +176,7 @@ class CommandLineInterface
             end
         end
         UI.keypress("Press Enter to go back", keys: [:return])
+        puts `clear`
         main_menu
     end
 
@@ -195,7 +219,9 @@ class CommandLineInterface
     end
 
     def display_recipe_details(rec)
+        puts `clear`
         chosen_recipe_data = Recipe.find_by(name: rec)
         chosen_recipe_data.display_recipe_info
+
     end
 end 

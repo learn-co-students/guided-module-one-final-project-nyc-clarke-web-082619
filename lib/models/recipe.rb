@@ -13,6 +13,8 @@ class Recipe < ActiveRecord::Base
         puts ''
         puts "Instructions:"
         eval(self.content).each{|section| puts " - " + section}
+        puts '-----------------------------------------------------------'
+        puts ''
 
     end
 
