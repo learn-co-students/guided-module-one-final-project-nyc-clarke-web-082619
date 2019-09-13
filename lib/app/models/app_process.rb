@@ -104,7 +104,7 @@ end
     puts "=========="
   end
 
-    def mini_markov_process
+    def twilio_markov_generator
     text = File.read("/Users/PuffingtonFiles/Desktop/total_data.txt")
     generator = MarkovChains::Generator.new(text)
     arr = generator.get_sentences(8)
@@ -309,13 +309,24 @@ end
     exit!
   end
 
-  def twilio_text(body)
+  def run_twilio(body)
     account_sid = 'AC2a63c8945c5ce051f44b775958aa850c'
     auth_token = '10145e00875e1bcf415f4d5e1a497351'
     client = Twilio::REST::Client.new(account_sid, auth_token)
     from = '++17573508918' 
     to = '+18609197401'
-    client.messages.create(from: from, to: to, body: "#{body}")
+    client.messages.create(from: from, to: to, body: "Try this pickup line: #{body}")
+  end
+
+  def run
+    intro
+    greeting
+    log_in_screen
+    set_location  
+    pickup_lines_for_location
+    random_line
+    begin_generation
+    flow
   end
 
   puts 'pleh'

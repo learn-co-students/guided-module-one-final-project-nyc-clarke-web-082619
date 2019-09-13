@@ -7,19 +7,8 @@ $prompt = TTY::Prompt.new
 
 system 'clear'
 
-def run
-  intro
-  greeting
-  log_in_screen
-  set_location  
-  pickup_lines_for_location
-  random_line
-  begin_generation
-  flow
-end
+#run 
 
-run 
-
-#twilio_text(mini_markov_process)
+run_twilio(twilio_markov_generator)
 
 puts 'pray this works'
