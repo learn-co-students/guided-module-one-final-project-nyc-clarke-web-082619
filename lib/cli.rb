@@ -212,7 +212,7 @@ class CommandLineInterface
     end
 
     def inclusive_recipe_search(user_input)
-        user_input = user_input.map { |item| item.capitalize } array)
+        user_input = user_input.map { |item| item.capitalize } 
     end
 
     def prioritized_recipe_search(user_input)
