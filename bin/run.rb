@@ -9,7 +9,6 @@ ActiveRecord::Base.logger = nil
 
 cli = CommandLineInterface.new
 
-cli.greet
 cli.main_menu
 
 

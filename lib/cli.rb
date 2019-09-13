@@ -4,6 +4,7 @@ class CommandLineInterface
 
     def main_menu
         puts `clear`
+        greet
         UI.select("What would you like to do?") do |menu|
             menu.choice 'Log In', -> do 
                 sign_in_to_profile
@@ -23,13 +24,13 @@ class CommandLineInterface
 
     def go_to_profile_page(profile)
         UI.select("What would you like to do?") do |menu|
-            menu.choice 'See my ingredients', -> do
+            menu.choice 'See my saved ingredients', -> do
                 puts `clear`
                 display_ingredient_names(profile.ingredient_names)
                 # new method here
                 go_to_profile_page(profile)
             end
-            menu.choice 'Find recipes for my ingredients', -> do
+            menu.choice 'Find recipes with my saved ingredients', -> do
                 puts `clear`
                 if profile.ingredient_names.length > 0
                     find_recipes_for_profile_ingredients(profile, profile.ingredient_names)
@@ -44,7 +45,11 @@ class CommandLineInterface
                 go_to_profile_page(profile)
             end
             menu.choice 'Remove an ingredient from my list', -> do
+                puts `clear`
+                display_ingredient_names(profile.ingredient_names)
                 ask_for_ingredient_and_remove(profile)
+                puts `clear`
+                display_ingredient_names(profile.ingredient_names)
                 go_to_profile_page(profile)
             end
             menu.choice 'Return to Main Menu', -> do
@@ -102,6 +107,7 @@ class CommandLineInterface
         elsif Ingredient.find_by(name: ingredient_name)
             new_ingredient = Ingredient.find_by(name: ingredient_name)
             profile.remove_ingredient(new_ingredient)
+            puts "Removed #{ingredient_name}"
         else 
             puts "You don't have any #{ingredient_name} in your list."
             return
@@ -199,7 +205,10 @@ class CommandLineInterface
     end
 
     def greet
-        puts 'Welcome to the Mixer, the app that helps you clean out your pantry!'
+        puts '----------------------Welcome to the PantrySweeper!----------------------------'
+        puts 'The app that helps you clean out your pantry using recipes from Epicurious.com!'
+        puts '                         *   *   *   *   *  *'
+        puts ''
     end
 
     def inclusive_recipe_search(user_input)
