@@ -31,7 +31,11 @@ class CommandLineInterface
             end
             menu.choice 'Find recipes for my ingredients', -> do
                 puts `clear`
-                find_recipes_for_profile_ingredients(profile, profile.ingredient_names)
+                if profile.ingredient_names.length > 0
+                    find_recipes_for_profile_ingredients(profile, profile.ingredient_names)
+                else
+                    puts "You have no ingredients saved."
+                end
                 # new method here
                 go_to_profile_page(profile)
             end
@@ -86,7 +90,7 @@ class CommandLineInterface
             profile.add_ingredient(new_ingredient)
         end
     end
-
+ 
     def ask_for_ingredient_and_remove(profile)
         ingredient_name = UI.ask('Enter the name of the ingredient you would like to remove (Enter "q" to go back to profile menu):') do |q|
             q.required true
